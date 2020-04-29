@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:inheritedwidgetshpppingcart/MyCatalog.dart';
-import 'package:inheritedwidgetshpppingcart/StateContainer.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:scopedmodelshoppingcart/MyCatalog.dart';
+import 'StateContainer.dart';
 import 'MyCart.dart';
 
 void main() => runApp(MyApp());
@@ -23,21 +24,38 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: StateContainer(
+      home: new ScopedModel<StateContainer>(
+        model: StateContainer(),
         child: MyHomePage(),
       ),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget{
+class MyHomePage extends StatelessWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  // This widget is the home page of your application. It is stateful, meaning
+  // that it has a State object (defined below) that contains fields that affect
+  // how it looks.
+
+  // This class is the configuration for the state. It holds the values (in this
+  // case the title) provided by the parent (in this case the App widget) and
+  // used by the build method of the State. Fields in a Widget subclass are
+  // always marked "final".
+
+  final String title;
 
   @override
   Widget build(BuildContext context) {
-    return StateContainer.of(context).state? MyCatalog(): MyCart();
+    return ScopedModelDescendant<StateContainer>(
+      builder: (context, child, model) {
+        if (model.state) {
+          return MyCatalog();
+        } else {
+          return MyCart();
+        }
+      },
+    );
   }
 }
-
-
-
-

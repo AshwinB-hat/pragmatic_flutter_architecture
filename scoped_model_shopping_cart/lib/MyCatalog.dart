@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:inheritedwidgetshpppingcart/Item.dart';
-import 'package:inheritedwidgetshpppingcart/StateContainer.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:scopedmodelshoppingcart/Item.dart';
+import 'StateContainer.dart';
 
 class MyCatalog extends StatefulWidget {
   final String title;
@@ -37,7 +38,7 @@ class _MyCatalogState extends State<MyCatalog> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.shopping_cart),
-            onPressed: StateContainer.of(context).toggle,
+            onPressed: ScopedModel.of<StateContainer>(context).toggle,
           ),
         ],
       ),
@@ -52,21 +53,21 @@ class _MyCatalogState extends State<MyCatalog> {
             final it = availableItems[index];
 
             return Container(
-              color: StateContainer.of(context).isSelected(it)? Colors.blueGrey : null,
+              color: ScopedModel.of<StateContainer>(context).isSelected(it)? Colors.blueGrey : null,
               child: ListTile(
                 title: Text(it.name,
                   style: TextStyle(
-                    color: StateContainer.of(context).isSelected(it)? Colors.white : null
+                    color: ScopedModel.of<StateContainer>(context).isSelected(it)? Colors.white : null
                   ) ,
                 ),
                 trailing: Text("\$" + it.price.toString(),
                   style: TextStyle(
-                    color: StateContainer.of(context).isSelected(it)? Colors.white : null
+                    color: ScopedModel.of<StateContainer>(context).isSelected(it)? Colors.white : null
                 )
                 ),
                 contentPadding: EdgeInsets.all(10),
                 onTap: () {
-                  StateContainerState scs = StateContainer.of(context);
+                  StateContainer scs = ScopedModel.of<StateContainer>(context);
                   if (!scs.isSelected(it)) {
                     scs.addItem(it);
                   } else {

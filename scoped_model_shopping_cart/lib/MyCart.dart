@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:inheritedwidgetshpppingcart/StateContainer.dart';
-import 'package:inheritedwidgetshpppingcart/main.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:scopedmodelshoppingcart/StateContainer.dart';
 
 class MyCart extends StatefulWidget {
   String title;
@@ -15,7 +15,7 @@ class MyCart extends StatefulWidget {
 class _MyCartState extends State<MyCart> {
   String totalPrice() {
     num total = 0;
-    for (var item in StateContainer.of(context).getItems()) {
+    for (var item in ScopedModel.of<StateContainer>(context).getItems()) {
       total += item.price;
     }
     return total.toString();
@@ -27,7 +27,7 @@ class _MyCartState extends State<MyCart> {
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
-            onPressed: StateContainer.of(context).toggle,
+            onPressed: ScopedModel.of<StateContainer>(context).toggle,
           ),
           backgroundColor: Colors.teal,
           title: Center(child: Text(widget.title)),
@@ -43,7 +43,7 @@ class _MyCartState extends State<MyCart> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          for(var item in StateContainer.of(context).getItems()) Row(
+                          for(var item in ScopedModel.of<StateContainer>(context).getItems()) Row(
                             children: <Widget>[
                               Text(
                                   item.name,
@@ -67,7 +67,7 @@ class _MyCartState extends State<MyCart> {
               ),
               Spacer(),
               RaisedButton(
-                onPressed: StateContainer.of(context).resetAll,
+                onPressed: ScopedModel.of<StateContainer>(context).resetAll,
                 color: Colors.teal,
                 child: Text(
                   "Reset All",
